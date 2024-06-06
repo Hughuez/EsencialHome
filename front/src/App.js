@@ -1,11 +1,14 @@
 import './App.css';
 import React from 'react';
+import Header from './components/layaout/Header';
+import Footer from './components/layaout/Footer';
 
 function App() {
   return (
     <div className="App">
-      <h1>Esencial Home Store</h1>
-      <img src= "./images/esencialHome.jpg" alt='imagen Esencial Home' ></img>
+      <Header />
+      <center> CONTENIDO AQUÍ </center>
+      <Footer />
     </div>
   );
 }
