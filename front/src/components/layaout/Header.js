@@ -19,15 +19,17 @@ const Header = () => {
                         placeholder='¿Qué buscas para tu hogar?'></input>
                     <div className='input-group-append'>
                         <button id='search-btn' class='btn'>
-                            <i class='fa fa fa' aria-hidden='true'></i>
+                            <i class='fa fa-search-plus fa-lg' aria-hidden='true'></i>
                         </button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </div>
             </div>
-
+            
             <div className='col-12 col-md-3 mt-4 mt-md-0 tex-center'>
-                <button className='btn' id='login-btn'>Ingresar</button>
-                <span id='cart' className='ml-3'>Mi Carrito</span>
+                <span><button type='button' class='btn btn-warning'>Ingresar</button></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <i class='fa fa-shopping-cart fa-2x' aria-hidden='true'></i>
                 <span className='ml-1' id='cart_count'>2</span>
             </div>
         </nav>
