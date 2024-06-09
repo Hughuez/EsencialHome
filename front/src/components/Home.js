@@ -1,8 +1,18 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react';
+import MetaData from './layaout/MetaData';
+import { useDispatch } from 'react-redux';
+import { getProducts } from '../actions/productsActions';
 
 const Home = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getProducts());
+    }, [dispatch])
+
     return (
         <Fragment>
+            <MetaData title='Inicio'></MetaData>
+            &nbsp;&nbsp;&nbsp;
             <h1 id='Encabezado Productos'>Productos de la Semana</h1>
 
             <section id="productos" className='container mt-5'>

@@ -1,0 +1,40 @@
+import axios from 'axios';
+import {
+    ALL_PRODUCTS_REQUEST,
+    ALL_PRODUCTS_SUCCESS,
+    ALL_PRODUCTS_FAIL,
+    CLEAR_ERRORS
+} from '../constants/productConstants';
+
+
+export const getProducts = () => async(dispatch)=>{
+    try {
+        dispatch({type: ALL_PRODUCTS_REQUEST}) //solicitud de los productos que estamos buscando
+
+        const {data} = await axios.get('api/productos') //ruta donde el back devuelve la informacion, cumplida la promesa guarda la informacion en esta constante
+
+        //si la solicitud es exitosa y se guarda la informacion en const data, muestra la respuesta en pantalla
+        dispatch({
+            type:ALL_PRODUCTS_SUCCESS,
+            payload: data
+        })
+    //atrapa el error
+    }catch (error){
+        dispatch({
+            type:ALL_PRODUCTS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+//clear error
+export const clearErrors = () => async(dispatch)=>{
+    dispatch({
+        type:CLEAR_ERRORS
+    })
+}
+
+/*
+conectamos el back con el front poniendo la conexion en el package.json del front
+"proxy":"http://localhost:4000"
+*/
