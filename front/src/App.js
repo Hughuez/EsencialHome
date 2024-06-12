@@ -3,6 +3,7 @@ import React from 'react';
 import Header from './components/layaout/Header';
 import Footer from './components/layaout/Footer';
 import Home from './components/Home';
+import { ProductDetails } from './components/products/ProductDetails';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path='/home' element={<Home />} />
             <Route path='/' element={<Home />} />
+            <Route path="/producto/:id" element={<ProductDetails />}/>
           </Routes>
         </div>
         
