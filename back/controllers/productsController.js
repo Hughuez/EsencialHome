@@ -1,8 +1,10 @@
 const producto = require('../models/productos');
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const ErrorHandler = require('../utils/errorHandler');
 const fetch = (url) => import('node-fetch').then(({default: fetch}) => fetch(url)); //usurpacion del require
 
 //Ver lista de productos
-exports.getProducts = async (req, res, next) => {
+exports.getProducts = catchAsyncErrors(async (req, res, next) => {
     const productos = await producto.find();
     if (!productos){
         return res.status(404).json({
@@ -16,17 +18,13 @@ exports.getProducts = async (req, res, next) => {
         count: productos.length,
         productos
     })
-}
+})
 
 //ver producto por id
-exports.getProductById = async (req, res, next) => {
+exports.getProductById = catchAsyncErrors(async (req, res, next) => {
     const product = await producto.findById(req.params.id);
     if(!product){
-        return res.status(404).json({
-            success: false,
-            message: `producto id: ${req.params.id}, no encontrado`,
-            error:true 
-        })
+        return next(new ErrorHandler("Producto no encontrado", 404))
     }else{
         res.status(200).json({
             success: true,
@@ -34,10 +32,10 @@ exports.getProductById = async (req, res, next) => {
             product
         })
     }
-}
+})
 
 // actualizar producto (update)
-exports.updateProduct = async (req, res, nex) => {
+exports.updateProduct = catchAsyncErrors(async (req, res, nex) => {
     let product = await producto.findById(req.params.id); 
     // verificamos existencia del objeto, si no existe termina el proceso
     if(!product){
@@ -59,20 +57,20 @@ exports.updateProduct = async (req, res, nex) => {
             product
         })
     }
-}
+})
 
 //crear un nuevo producto
-exports.newProduct = async(req, res, next) => {
+exports.newProduct = catchAsyncErrors(async(req, res, next) => {
     const product = await producto.create(req.body);
 
     res.status(201).json({
         success: true,
         product
     });
-}
+})
 
 // eliminar producto
-exports.deleteProduct = async (req, res, nex) => {
+exports.deleteProduct = catchAsyncErrors(async (req, res, nex) => {
     const product = await producto.findById(req.params.id); 
     if(!product){
         return res.status(404).json({
@@ -87,7 +85,7 @@ exports.deleteProduct = async (req, res, nex) => {
             message:'Producto eliminado correctamente.'
         })
     }
-}
+})
 
 /*
 FETCH
