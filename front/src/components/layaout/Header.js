@@ -8,7 +8,7 @@ const Header = () => {
         <nav className='navbar row'>
             <div className='col-12 col-md-3'>
                 <div className='navbar-brand'>
-                    <img src='./images/esencialHome.png' alt='Logo Esencial Home'></img>
+                    <Link to="/" ><img src='./images/esencialHome.png' alt='Logo Esencial Home'></img></Link>
                 </div>
             </div>
 
@@ -32,15 +32,17 @@ const Header = () => {
             <div className="ml-4 dropdown d-inline">
                         <Link to="#!" className="btn dropdown-toggle mr-4" type="button"
                         id="dropDownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span>Menú</span></Link>&nbsp;&nbsp;&nbsp;&nbsp;  
+                            <span>Menú</span></Link>
                             <div className='dropdown-menu' aria-labelledby='dropDownMenu'>
                                 <Link className="dropdown-item" to="/Dashboard">Adm. Productos</Link>
                                 <Link className="dropdown-item" to="/">Pedidos</Link>
                                 <Link className="dropdown-item" to="/">Mi cuenta</Link>
                                 <Link className="dropdown-item" to="/">Cerrar Sesion</Link>
                             </div>
+                              
                     </div>
-                <i class='fa fa-shopping-cart fa-2x' aria-hidden='true'></i>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Link to="/carrito"><i class='fa fa-shopping-cart fa-2x' aria-hidden='true'></i></Link>
                 <span className='ml-1' id='cart_count'>2</span>
             </div>
         </nav>

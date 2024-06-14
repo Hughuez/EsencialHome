@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect } from 'react'
-import { MDBDataTable } from 'mdbreact'
+import React, { Fragment, useEffect } from 'react';
+import { MDBDataTable } from 'mdbreact';
+import {Link } from "react-router-dom";
 
 import MetaData from '../layaout/MetaData';
 import Sidebar from './Sidebar';
@@ -24,11 +25,6 @@ export const ProductsList = () => {
         const data = {
             columns: [
                 {
-                    label: 'ID',
-                    field: 'id',
-                    sort: 'asc'
-                },
-                {
                     label: 'Nombre',
                     field: 'nombre',
                     sort: 'asc'
@@ -43,16 +39,38 @@ export const ProductsList = () => {
                     field: 'inventario',
                     sort: 'asc'
                 },
+                {
+                    label: 'Distribuidor',
+                    field: 'distribuidor',
+                    sort: 'asc'
+                },
+                {
+                    label: 'Acciones',
+                    field: 'actions',
+                },
             ],
             rows: []
         }
 
         productos.forEach(product => {
             data.rows.push({
-                id: product._id,
                 nombre: product.nombre,
                 precio: `$${product.precio}`,
                 inventario: product.inventario,
+                distribuidor: product.distribuidor,
+                actions: <Fragment>
+                    <Link to={`/producto/${product._id}`} className="btn btn-primary py-1 px-2">
+                        <i className="fa fa-eye"></i>
+                    </Link><Link to="/" className="btn btn-warning py-1 px-2">
+                    <i class="fa fa-pencil"></i>
+                    </Link>
+
+                    <Link to="/" className="btn btn-danger py-1 px-2">
+                        <i className="fa fa-trash"></i>
+                    </Link>
+
+
+                </Fragment>
             })
         })
 
@@ -69,7 +87,7 @@ export const ProductsList = () => {
 
                 <div className="col-12 col-md-10">
                     <Fragment>
-                        <h1 className="my-5">All Products</h1>
+                        <h1 className="my-5">Productos Registrados</h1>
 
                         {loading ? <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i> :(
                             <MDBDataTable
