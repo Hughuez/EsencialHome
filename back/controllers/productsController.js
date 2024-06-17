@@ -61,6 +61,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, nex) => {
 
 //crear un nuevo producto
 exports.newProduct = catchAsyncErrors(async(req, res, next) => {
+    req.body.user=req.user.id;
     const product = await producto.create(req.body);
 
     res.status(201).json({

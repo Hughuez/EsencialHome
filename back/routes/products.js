@@ -14,10 +14,10 @@ const {
 } = require("../middleware/auth");
 
 // rutas
-router.route('/productos').get(isAuthenticatedUser, authorizeRoles("admin"), getProducts) //Establecemos desde que ruta queremos ver el getProducts
-router.route('/producto/nuevo').post(newProduct); // Establecemos ruta para crear producto nuevo
+router.route('/productos').get(getProducts) //Establecemos desde que ruta queremos ver el getProducts
+router.route('/producto/nuevo').post(isAuthenticatedUser, authorizeRoles("admin"), newProduct); // Establecemos ruta para crear producto nuevo
 router.route('/producto/:id').get(getProductById); // consulta por id
-router.route('/producto/:id').put(updateProduct); // actualizacion de producto (update)
-router.route('/producto/:id').delete(deleteProduct); // eliminar producto por id
+router.route('/producto/:id').put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct); // actualizacion de producto (update)
+router.route('/producto/:id').delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct); // eliminar producto por id
 
 module.exports = router;

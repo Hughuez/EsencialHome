@@ -1,43 +1,43 @@
 const mongoose = require('mongoose');
 
 const productosSchema = mongoose.Schema({
-    nombre:{
-        type:String,
-        required:[true, 'Por Favor ingrese el nombre del producto'],
-        trim:true,
-        maxLength:[120,'El nombre del producto no debe exceder 120 caracteres']
+    nombre: {
+        type: String,
+        required: [true, 'Por Favor ingrese el nombre del producto'],
+        trim: true,
+        maxLength: [120, 'El nombre del producto no debe exceder 120 caracteres']
     },
-    precio:{
-        type:Number,
-        required:[true, 'Por Favor ingrese el precio del producto'],
-        maxLength:[7,"El nombre del producto no debe exceder los 99'000.000"],
+    precio: {
+        type: Number,
+        required: [true, 'Por Favor ingrese el precio del producto'],
+        maxLength: [7, "El nombre del producto no debe exceder los 99'000.000"],
         default: 0.0
     },
-    descripcion:{
-        type:String,
-        required:[true, 'Por Favor ingrese la descripción del producto'],
+    descripcion: {
+        type: String,
+        required: [true, 'Por Favor ingrese la descripción del producto'],
     },
-    calificacion:{
-        type:Number,
+    calificacion: {
+        type: Number,
         default: 0
     },
-    imagen:[
+    imagen: [
         {
-            public_id:{
-                type:String,
+            public_id: {
+                type: String,
                 required: true
             },
-            url:{
-                type:String,
+            url: {
+                type: String,
                 required: true
             }
         }
     ],
-    categoria:{
-        type:String,
-        required:[true, 'Por Favor selecciones la categoría a la que pertenece el producto'],
-        enum:{
-            values:[
+    categoria: {
+        type: String,
+        required: [true, 'Por Favor selecciones la categoría a la que pertenece el producto'],
+        enum: {
+            values: [
                 'Ollas de cocina',
                 'Juegos de vajilla',
                 'Sartenes, woks, planchas y biferas',
@@ -64,43 +64,48 @@ const productosSchema = mongoose.Schema({
                 'Multiprocesadoras de alimentos',
                 'Planchas',
                 'Artefactos para el hogar',
-                'Olletas y Lecheros'                  
+                'Olletas y Lecheros'
             ]
         }
     },
-    Distribuidor:{
-        type:String,
-        required:[true, 'Por Favor ingrese el distribuidor del producto'],
+    Distribuidor: {
+        type: String,
+        required: [true, 'Por Favor ingrese el distribuidor del producto'],
     },
-    inventario:{
-        type:Number,
-        required:[true, 'Por favor registre el Stock del producto'],
-        maxLength:[5, 'El Stock del inventario no puede superar los 9.999 articulos'],
-        default:0
+    inventario: {
+        type: Number,
+        required: [true, 'Por favor registre el Stock del producto'],
+        maxLength: [5, 'El Stock del inventario no puede superar los 9.999 articulos'],
+        default: 0
     },
-    numCalificaciones:{
-        type:Number,
-        default:0
+    numCalificaciones: {
+        type: Number,
+        default: 0
     },
-    opiniones:[
+    opiniones: [
         {
-            nombreCliente:{
-                type:String,
-                required:true
+            nombreCliente: {
+                type: String,
+                required: true
             },
-            rating:{
-                type:Number,
-                required:true
+            rating: {
+                type: Number,
+                required: true
             },
-            comentario:{
-                type:String,
-                required:true
+            comentario: {
+                type: String,
+                required: true
             }
         }
     ],
-    fechaCreacion:{
-        type:Date,
-        default:Date.now
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    fechaCreacion: {
+        type: Date,
+        default: Date.now
     }
 });
 
