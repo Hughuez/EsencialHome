@@ -6,7 +6,10 @@ const {
     newProduct, 
     getProductById,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    createProductReview,
+    getProductReviews,
+    deleteReview
 } = require('../controllers/productsController') //traemos la respuesta json desde el controlador
 const { 
     isAuthenticatedUser, 
@@ -19,5 +22,9 @@ router.route('/producto/nuevo').post(isAuthenticatedUser, authorizeRoles("admin"
 router.route('/producto/:id').get(getProductById); // consulta por id
 router.route('/producto/:id').put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct); // actualizacion de producto (update)
 router.route('/producto/:id').delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct); // eliminar producto por id
+
+router.route("/review").put(isAuthenticatedUser, createProductReview) //crear una review
+router.route("/reviews").get(isAuthenticatedUser, getProductReviews)
+router.route("/review").delete(isAuthenticatedUser, deleteReview)
 
 module.exports = router;
