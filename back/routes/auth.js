@@ -10,7 +10,8 @@ const {
     updateProfile,
     getAllUsers,
     getUserDetails,
-    updateUser
+    updateUser,
+    deleteUser
 } = require("../controllers/authController");
 const { 
     isAuthenticatedUser,
@@ -31,6 +32,7 @@ router.route('/mycount/updateProfile').put(isAuthenticatedUser, updateProfile) /
 router.route('/admin/allUsers').get(isAuthenticatedUser, authorizeRoles("admin"), getAllUsers) //ver usuarios desde admin
 router.route('/admin/user/:id').get(isAuthenticatedUser, authorizeRoles("admin"), getUserDetails) //ver detalle de usuario desde admin
 router.route('/admin/updateUser/:id').put(isAuthenticatedUser, authorizeRoles("admin"), updateUser) // actualizar usuario desde admin
+router.route("/admin/deleteUser/:id").delete(isAuthenticatedUser, authorizeRoles("admin"), deleteUser) // eliminar usuario desde admin
 
 
 module.exports= router
