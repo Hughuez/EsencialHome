@@ -133,6 +133,7 @@ exports.getProductReviews = catchAsyncErrors(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
+        nOpiniones: product.opiniones.length,
         opiniones: product.opiniones
     })
 })
@@ -195,3 +196,4 @@ function verProductoPorId (id) {
 }
 
 // verProductoPorId('665fe704d34ed60007c4b252');
+

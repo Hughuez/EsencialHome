@@ -24,7 +24,7 @@ router.route('/producto/:id').put(isAuthenticatedUser, authorizeRoles("admin"), 
 router.route('/producto/:id').delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct); // eliminar producto por id
 
 router.route("/review").put(isAuthenticatedUser, createProductReview) //crear una review
-router.route("/reviews").get(isAuthenticatedUser, getProductReviews)
+router.route("/reviews").get(getProductReviews)
 router.route("/review").delete(isAuthenticatedUser, deleteReview)
 
 module.exports = router;
