@@ -2,13 +2,14 @@ import React, { Fragment, useEffect, useState } from 'react';
 import MetaData from './layaout/MetaData';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../actions/productsActions';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useAlert} from 'react-alert';
 import Pagination from 'react-js-pagination';
 
 const Home = () => {
     const [currentPage, setCurrentPage] = useState(1)
-
+    const params= useParams();
+    const keyword= params.keyword;
     const { loading, products, error, resPerPage, productsCount } = useSelector(state => state.products)
     const alert= useAlert();
 
@@ -18,9 +19,9 @@ const Home = () => {
             return alert.error(error)
         }
 
-        dispatch(getProducts(currentPage));
+        dispatch(getProducts(currentPage, keyword));
         alert.success('OK')
-    }, [dispatch, error, alert, currentPage])
+    }, [dispatch, error, alert, currentPage, keyword])
 
     function setCurrentPageNo(pageNumber){
         setCurrentPage(pageNumber)
