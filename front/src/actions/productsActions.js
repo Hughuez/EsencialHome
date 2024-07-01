@@ -10,11 +10,11 @@ import {
 } from '../constants/productConstants';
 
 
-export const getProducts = () => async(dispatch)=>{
+export const getProducts = (currentPage =1) => async(dispatch)=>{
     try {
         dispatch({type: ALL_PRODUCTS_REQUEST}) //solicitud de los productos que estamos buscando
 
-        const {data} = await axios.get('api/productos') //ruta donde el back devuelve la informacion, cumplida la promesa guarda la informacion en esta constante
+        const {data} = await axios.get(` api/productos?page=${currentPage}`) //ruta donde el back devuelve la informacion, cumplida la promesa guarda la informacion en esta constante
 
         //si la solicitud es exitosa y se guarda la informacion en const data, muestra la respuesta en pantalla
         dispatch({
