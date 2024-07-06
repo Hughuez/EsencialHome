@@ -1,9 +1,10 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState, useEffect  } from 'react';
+import { useAlert} from 'react-alert';
 import MetaData from './layaout/MetaData';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../actions/productsActions';
 import { useParams, Link } from 'react-router-dom';
-import { useAlert} from 'react-alert';
+
 import Pagination from 'react-js-pagination';
 
 const Home = () => {
