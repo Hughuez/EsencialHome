@@ -7,6 +7,7 @@ import { useAlert } from 'react-alert';
 import { logout} from "../../actions/userActions";
 
 const Header = () => {
+    const {cartItems} = useSelector(state=>state.cart)
     const alert= useAlert();
     const dispatch= useDispatch();
 
@@ -34,7 +35,7 @@ const Header = () => {
                     
                     <Link to="/carrito"><i class='fa fa-shopping-cart fa-2x' aria-hidden='true'></i></Link>
                     
-                    <span className='ml-1' id='cart_count'>2</span>
+                    <span className='ml-1' id='cart_count'>{cartItems.length}</span>
 
                     {user ? (
                         <div className="ml-4 dropdown d-inline">
