@@ -6,54 +6,104 @@ import {
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
     PRODUCT_DETAILS_FAIL,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    ADMIN_PRODUCTS_REQUEST,
+    ADMIN_PRODUCTS_SUCCESS,
+    ADMIN_PRODUCTS_FAIL,
+    NEW_PRODUCT_REQUEST,
+    NEW_PRODUCT_SUCCESS,
+    NEW_PRODUCT_FAIL
 } from '../constants/productConstants';
 
-
-export const getProducts = (currentPage =1, keyword='') => async(dispatch)=>{
+//VER PRODUCTOS
+export const getProducts = (currentPage = 1, keyword = '') => async (dispatch) => {
     try {
-        dispatch({type: ALL_PRODUCTS_REQUEST}) //solicitud de los productos que estamos buscando
+        dispatch({ type: ALL_PRODUCTS_REQUEST }) //solicitud de los productos que estamos buscando
 
-        const {data} = await axios.get(`/api/productos?keyword=${keyword}&page=${currentPage}`) //ruta donde el back devuelve la informacion, cumplida la promesa guarda la informacion en esta constante
+        const { data } = await axios.get(`/api/productos?keyword=${keyword}&page=${currentPage}`) //ruta donde el back devuelve la informacion, cumplida la promesa guarda la informacion en esta constante
 
         //si la solicitud es exitosa y se guarda la informacion en const data, muestra la respuesta en pantalla
         dispatch({
-            type:ALL_PRODUCTS_SUCCESS,
+            type: ALL_PRODUCTS_SUCCESS,
             payload: data
         })
-    //atrapa el error
-    }catch (error){
+        //atrapa el error
+    } catch (error) {
         dispatch({
-            type:ALL_PRODUCTS_FAIL,
+            type: ALL_PRODUCTS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+//ADMIN - get products
+export const getAdminProducts = () => async (dispatch) => {
+    try {
+        dispatch({ type: ADMIN_PRODUCTS_REQUEST })
+
+        const { data } = await axios.get('/api/admin/productos')
+
+        dispatch({
+            type: ADMIN_PRODUCTS_SUCCESS,
+            payload: data.products
+        })
+    } catch (error) {
+        dispatch({
+            type: ADMIN_PRODUCTS_FAIL,
+            payload: error.response.data.message
+        })
+    } 
+}
+
+//NUEVO PRODUCTO -ADMIN
+export const newProduct = ( productData ) => async (dispatch)=>{
+    try {
+        dispatch({type: NEW_PRODUCT_REQUEST})
+
+        const config ={ 
+            header: { 
+                'Content-Type':'application/json'
+            }
+        }
+
+        const {data} = await axios.post('/api/producto/nuevo', productData, config)
+
+        dispatch({
+            type: NEW_PRODUCT_SUCCESS,
+            payload: data
+        })
+    }catch(error){
+        dispatch({
+            type: NEW_PRODUCT_FAIL,
             payload: error.response.data.message
         })
     }
 }
 
 //VER DETALLE DEL PRODUCTO
-export const getProductDetails = (id) => async(dispatch)=>{
+export const getProductDetails = (id) => async (dispatch) => {
     try {
-        dispatch({type: PRODUCT_DETAILS_REQUEST})
+        dispatch({ type: PRODUCT_DETAILS_REQUEST })
 
-        const {data} = await axios.get(`/api/producto/${id}`)
+        const { data } = await axios.get(`/api/producto/${id}`)
 
         dispatch({
-            type:PRODUCT_DETAILS_SUCCESS,
+            type: PRODUCT_DETAILS_SUCCESS,
             payload: data.product
         })
-    }catch (error){
+    } catch (error) {
         dispatch({
-            type:PRODUCT_DETAILS_FAIL,
+            type: PRODUCT_DETAILS_FAIL,
             payload: error.response.data.message
         })
     }
-}   
+}
 
 
 //clear error
-export const clearErrors = () => async(dispatch)=>{
+export const clearErrors = () => async (dispatch) => {
     dispatch({
-        type:CLEAR_ERRORS
+        type: CLEAR_ERRORS
     })
 }
 

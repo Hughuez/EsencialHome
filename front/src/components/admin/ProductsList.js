@@ -6,19 +6,23 @@ import MetaData from '../layaout/MetaData';
 import Sidebar from './Sidebar';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../../actions/productsActions';
+import { clearErrors, getAdminProducts } from '../../actions/productsActions'
 
-export const ProductsList = () => {
-    const { loading, productos, error} = useSelector(state=> state.products)
-    const alert= useAlert();
+const ProductsList = () => {
 
+    const alert = useAlert();
     const dispatch = useDispatch();
+
+    const { loading, error, products } = useSelector(state => state.products);
+
     useEffect(() => {
-        if (error){
-            return alert.error(error)
+        dispatch(getAdminProducts());
+
+        if (error) {
+            alert.error(error);
+            dispatch(clearErrors())
         }
 
-        dispatch(getProducts());
     }, [dispatch, alert, error])
 
     const setProducts = () => {
@@ -46,26 +50,26 @@ export const ProductsList = () => {
                 },
                 {
                     label: 'Acciones',
-                    field: 'actions',
+                    field: 'acciones',
                 },
             ],
             rows: []
         }
 
-        productos.forEach(product => {
+        products.forEach(product => {
             data.rows.push({
                 nombre: product.nombre,
                 precio: `$${product.precio}`,
                 inventario: product.inventario,
                 distribuidor: product.distribuidor,
-                actions: <Fragment>
-                    <Link to={`/producto/${product._id}`} className="btn btn-primary py-1 px-2">
+                acciones: <Fragment>
+                    <Link to={`/producto/${product._id}`} className="btn btn-primary py-1 px-1">
                         <i className="fa fa-eye"></i>
-                    </Link><Link to="/" className="btn btn-warning py-1 px-2">
+                    </Link><Link to="/" className="btn btn-warning py-1 px-1">
                     <i class="fa fa-pencil"></i>
                     </Link>
 
-                    <Link to="/" className="btn btn-danger py-1 px-2">
+                    <Link to="/" className="btn btn-danger py-1 px-1">
                         <i className="fa fa-trash"></i>
                     </Link>
 
