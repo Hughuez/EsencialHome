@@ -1,22 +1,20 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
+
 import MetaData from '../layaout/MetaData';
 import Sidebar from './Sidebar';
+
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearErrors, newProduct } from '../../actions/productsActions';
+import { newProduct, clearErrors } from '../../actions/productsActions';
 import { NEW_PRODUCT_RESET } from '../../constants/productConstants';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
-
 const NewProduct = () => {
-    const navigate= useNavigate()
+    const navigate = useNavigate()
     const [nombre, setNombre] = useState('');
     const [precio, setPrecio] = useState(0);
     const [descripcion, setDescripcion] = useState('');
-    const [categoria, setCategoria] = useState('');
+    const [categoria, setCategoria] = useState('Seleccione Categoria');
     const [inventario, setInventario] = useState(0);
     const [distribuidor, setDistribuidor] = useState('');
     const [imagen, setImagen] = useState([]);
@@ -63,11 +61,13 @@ const NewProduct = () => {
             alert.error(error);
             dispatch(clearErrors())
         }
+
         if (success) {
             navigate('/dashboard');
             alert.success('Product created successfully');
             dispatch({ type: NEW_PRODUCT_RESET })
         }
+
     }, [dispatch, alert, error, success, navigate])
 
     const submitHandler = (e) => {
@@ -89,24 +89,25 @@ const NewProduct = () => {
     }
 
     const onChange = e => {
+
         const files = Array.from(e.target.files)
 
         setImagenPreview([]);
-        setImagen([]);
+        setImagen([])
 
         files.forEach(file => {
             const reader = new FileReader();
-
             reader.onload = () => {
                 if (reader.readyState === 2) {
                     setImagenPreview(oldArray => [...oldArray, reader.result])
                     setImagen(oldArray => [...oldArray, reader.result])
                 }
             }
+
             reader.readAsDataURL(file)
         })
-
     }
+
 
     return (
         <Fragment>
@@ -131,7 +132,6 @@ const NewProduct = () => {
                                         onChange={(e) => setNombre(e.target.value)}
                                     />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="price_field">Precio</label>
                                     <input
@@ -145,18 +145,18 @@ const NewProduct = () => {
 
                                 <div className="form-group">
                                     <label htmlFor="description_field">Descripción</label>
-                                    <textarea className="form-control" 
-                                    id="description_field" 
-                                    rows="8" 
-                                    value={descripcion} 
-                                    onChange={(e) => setDescripcion(e.target.value)}></textarea>
+                                    <textarea className="form-control"
+                                        id="description_field"
+                                        rows="8"
+                                        value={descripcion}
+                                        onChange={(e) => setDescripcion(e.target.value)}></textarea>
                                 </div>
 
                                 <div className="form-group">
                                     <label htmlFor="category_field">Categoria</label>
-                                    <select className="form-control" 
-                                    id="category_field" 
-                                    value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                                    <select className="form-control"
+                                        id="category_field"
+                                        value={categoria} onChange={(e) => setCategoria(e.target.value)}>
                                         {categorias.map(categoria => (
                                             <option key={categoria} value={categoria} >{categoria}</option>
                                         ))}
@@ -173,7 +173,6 @@ const NewProduct = () => {
                                         onChange={(e) => setInventario(e.target.value)}
                                     />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="seller_field">Distribuidor</label>
                                     <input
@@ -187,6 +186,7 @@ const NewProduct = () => {
 
                                 <div className='form-group'>
                                     <label>Imágenes</label>
+
                                     <div className='custom-file'>
                                         <input
                                             type='file'
@@ -200,12 +200,12 @@ const NewProduct = () => {
                                             Seleccione Imágenes
                                         </label>
                                     </div>
+
                                     {imagenPreview.map(img => (
                                         <img src={img} key={img} alt="Images Preview" className="mt-3 mr-2" width="55" height="52" />
                                     ))}
 
                                 </div>
-
                                 <button
                                     id="login_button"
                                     type="submit"
@@ -214,6 +214,7 @@ const NewProduct = () => {
                                 >
                                     CREATE
                                 </button>
+
                             </form>
                         </div>
                     </Fragment>

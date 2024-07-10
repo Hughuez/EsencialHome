@@ -68,7 +68,7 @@ const productosSchema = mongoose.Schema({
             ]
         }
     },
-    Distribuidor: {
+    distribuidor: {
         type: String,
         required: [true, 'Por Favor ingrese el distribuidor del producto'],
     },
