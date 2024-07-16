@@ -6,7 +6,7 @@ import MetaData from '../layaout/MetaData';
 import Sidebar from './Sidebar';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearErrors, getAdminProducts } from '../../actions/productsActions'
+import { clearErrors, deleteProduct, getAdminProducts } from '../../actions/productsActions'
 
 const ProductsList = () => {
 
@@ -14,6 +14,15 @@ const ProductsList = () => {
     const dispatch = useDispatch();
 
     const { loading, error, products } = useSelector(state => state.products);
+
+    const deleteProductHandler= (id)=> {
+        const response=window.confirm("Esta seguro de querer borrar este producto?")
+        if (response){
+            dispatch(deleteProduct(id))
+            alert.success("Producto eliminado correctamente")
+            window.location.reload(false)
+        }
+    }
 
     useEffect(() => {
         dispatch(getAdminProducts());
@@ -65,13 +74,13 @@ const ProductsList = () => {
                 acciones: <Fragment>
                     <Link to={`/producto/${product._id}`} className="btn btn-primary py-1 px-1">
                         <i className="fa fa-eye"></i>
-                    </Link><Link to="/" className="btn btn-warning py-1 px-1">
+                    </Link><Link to={`/updateProduct/${product._id}`} className="btn btn-warning py-1 px-1">
                     <i class="fa fa-pencil"></i>
                     </Link>
 
-                    <Link to="/" className="btn btn-danger py-1 px-1">
+                    <button className="btn btn-danger py-1 px-1" onClick={() => deleteProductHandler(product._id)}>
                         <i className="fa fa-trash"></i>
-                    </Link>
+                    </button>
 
 
                 </Fragment>
