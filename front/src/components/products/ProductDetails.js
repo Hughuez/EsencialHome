@@ -1,31 +1,47 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import MetaData from "../layaout/MetaData";
-import { useParams } from 'react-router-dom';
-import { getProductDetails, clearErrors } from '../../actions/productsActions';
-import { useAlert } from 'react-alert';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Carousel } from 'react-bootstrap';
+import MetaData from '../layaout/MetaData';
+import { useParams } from "react-router-dom";
+import { useAlert } from 'react-alert';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProductDetails, newReview, clearErrors } from '../../actions/productsActions';
 import { addItemToCart } from '../../actions/cartActions';
+import { NEW_REVIEW_RESET } from '../../constants/productConstants';
+import ListReviews from '../order/ListReviews';
 
 export const ProductDetails = () => {
+  const params = useParams();
+  const [quantity, setQuantity] = useState(1)
+  const [rating, setRating] = useState(0);
+  const [comentario, setComentario] = useState('');
 
-  const { loading, product, error } = useSelector(state => state.productDetails)
-  const { id } = useParams();
   const dispatch = useDispatch();
   const alert = useAlert();
-  const [quantity, setQuantity] = useState(1)
 
+  const { loading, error, product } = useSelector(state => state.productDetails)
+  const { user } = useSelector(state => state.auth)
+  const { error: reviewError, success } = useSelector(state => state.newReview)
 
   useEffect(() => {
-    dispatch(getProductDetails(id))
+    dispatch(getProductDetails(params.id))
+
     if (error) {
       alert.error(error);
       dispatch(clearErrors())
     }
 
-  }, [dispatch, alert, error, id])
+    if (reviewError) {
+      alert.error(reviewError);
+      dispatch(clearErrors())
+    }
 
-  //funcion para sumar cantidades en el contador de carrito
+    if (success) {
+      alert.success('Opinion registrada correctamente')
+      dispatch({ type: NEW_REVIEW_RESET })
+    }
+
+  }, [dispatch, alert, error, reviewError, params.id, success])
+
   const increaseQty = () => {
     const contador = document.querySelector('.count')
 
@@ -35,7 +51,6 @@ export const ProductDetails = () => {
     setQuantity(qty)
   }
 
-  //funcion para restar cantidades en el contador de carrito
   const decreaseQty = () => {
     const contador = document.querySelector('.count')
 
@@ -46,8 +61,55 @@ export const ProductDetails = () => {
   }
 
   const addToCart = () => {
-    dispatch(addItemToCart(id, quantity));
+    dispatch(addItemToCart(params.id, quantity));
     alert.success('Producto agregado al carro')
+  }
+
+  function setUserRatings() {
+    const stars = document.querySelectorAll('.star');
+
+    stars.forEach((star, index) => {
+      star.starValue = index + 1;
+
+      ['click', 'mouseover', 'mouseout'].forEach(function (e) {
+        star.addEventListener(e, showRatings);
+      })
+    })
+
+    function showRatings(e) {
+      stars.forEach((star, index) => {
+        if (e.type === 'click') {
+          if (index < this.starValue) {
+            star.classList.add('orange');
+
+            setRating(this.starValue)
+          } else {
+            star.classList.remove('orange')
+          }
+        }
+
+        if (e.type === 'mouseover') {
+          if (index < this.starValue) {
+            star.classList.add('yellow');
+          } else {
+            star.classList.remove('yellow')
+          }
+        }
+
+        if (e.type === 'mouseout') {
+          star.classList.remove('yellow')
+        }
+      })
+    }
+  }
+  const reviewHandler = () => {
+    const formData = new FormData();
+
+    formData.set('rating', rating);
+    formData.set('comentario', comentario);
+    formData.set('idProducto', params.id);
+
+    dispatch(newReview(formData));
   }
 
   return (
@@ -94,9 +156,13 @@ export const ProductDetails = () => {
               <p>{product.descripcion}</p>
               <hr />
               <p id="vendedor">Distribuidor: <strong>{product.Distribuidor}</strong></p>
-              <button id="btn_review" type="button" className="btn btn-primary mt-4"
-                data-toggle="modal" data-target="#ratingModal">Deja tu Opinion</button>
-              <div className="alert alert-danger mt-5" type="alert">Inicia Sesión para dejar tu review</div>
+
+              {user ?
+                <button id="btn_review" type="button" className="btn btn-primary mt-4"
+                  data-toggle="modal" data-target="#ratingModal" onClick={setUserRatings}>Deja tu Opinion</button>
+                :
+                <div className="alert alert-danger mt-5" type="alert">Inicia Sesión para dejar tu review</div>
+              }
 
               {/*Mensaje emergente para dejar opinion y calificacion*/}
               <div className="row mt-2 mb-5">
@@ -120,10 +186,16 @@ export const ProductDetails = () => {
                             <li className="star"><i className="fa fa-star"></i></li>
                           </ul>
 
-                          <textarea name="review" id="review" className="form-control mt3"></textarea>
+                          <textarea
+                            name="review"
+                            id="review"
+                            className="form-control mt3"
+                            value={comentario}
+                            onChange={(e) => setComentario(e.target.value)}
+                          ></textarea>
 
                           <button className="btn my-3 float-right review-btn px-4 text-white"
-                            data-dismiss="modal" aria-label="Close">Enviar</button>
+                            onClick={reviewHandler} data-dismiss="modal" aria-label="Close">Enviar</button>
 
                         </div>
                       </div>
@@ -134,6 +206,7 @@ export const ProductDetails = () => {
               </div>
             </div>
           </div>
+          {product.opiniones && product.opiniones.length > 0 && (<ListReviews opiniones={product.opiniones}/>)}
         </Fragment>
       )}
     </Fragment>
