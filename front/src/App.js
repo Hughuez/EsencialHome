@@ -27,6 +27,11 @@ import { Payment } from './components/cart/Payment';
 import { Success } from './components/cart/Success';
 import { ListOrder } from './components/order/ListOrder';
 import { OrderDetails } from './components/order/OrderDetails';
+import OrdersList from './components/admin/OrderList';
+import ProcessOrder from './components/admin/ProccessOrder';
+import UsersList from './components/admin/UserList';
+import UpdateUser from './components/admin/UpdateUser';
+import ProductReviews from './components/admin/ProductReviews';
 
 function App() {
   useEffect(() => {
@@ -42,27 +47,41 @@ function App() {
             <Route path='/home' element={<Home />} />
             <Route path='/' element={<Home />} />
             <Route path="/producto/:id" element={<ProductDetails />} />
-            <Route path="/productList" element={<ProductsList />} />
-            <Route path="/nuevoProducto" element={<NewProduct />} />
+           
             <Route path="/search/:keyword" element={<Home />} />
             <Route path="/carrito" element={<Cart />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
-            <Route path='/mycount' element={<Profile />} />
-            <Route path="/mycount/update" element={<UpdateProfile />} />
-            <Route path="/password/update" element={<UpdatePassword />} />
+
             <Route path="/password/forgot" element={<ForgotPassword />} />
             <Route path="/resetPassword/:token" element={<NewPassword />} />
 
             {/*Ruta protegida*/}
             <Route path="/dashboard" element={<ProtectedRoute isAdmin={true}><Dashboard /></ProtectedRoute>} />
+
             <Route path="/updateProduct/:id" element={<ProtectedRoute isAdmin={true}><UpdateProduct /></ProtectedRoute>} />
+            <Route path="/orderList" element={<ProtectedRoute isAdmin={true}><OrdersList /></ProtectedRoute>} />
+
+            <Route path="/admin/order/:id" element={<ProtectedRoute isAdmin={true}><ProcessOrder /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute isAdmin={true}><UsersList /></ProtectedRoute>} />
+            <Route path="/admin/user/:id" element={<ProtectedRoute isAdmin={true}><UpdateUser /></ProtectedRoute>} />
+            <Route path="/admin/reviews" element={<ProtectedRoute isAdmin={true}><ProductReviews /></ProtectedRoute>} />
+
             <Route path="/shipping" element={<ProtectedRoute><Shipping /></ProtectedRoute>} />
+
             <Route path="/order/confirm" element={<ProtectedRoute><ConfirmOrder /></ProtectedRoute>} />
             <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
             <Route path="/success" element={<ProtectedRoute><Success /></ProtectedRoute>} />
             <Route path="/myOrders" element={<ProtectedRoute><ListOrder /></ProtectedRoute>} />
             <Route path="/order/:id" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
+
+            <Route path="/productList" element={<ProductsList />} />
+            <Route path="/nuevoProducto" element={<NewProduct />} />
+
+            <Route path='/mycount' element={<Profile />} />
+            <Route path="/mycount/update" element={<UpdateProfile />} />
+            <Route path="/password/update" element={<UpdatePassword />} />
+
           </Routes>
         </div>
 
