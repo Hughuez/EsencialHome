@@ -1,0 +1,2 @@
+lista_archivos.txt
+ProductDetails.js

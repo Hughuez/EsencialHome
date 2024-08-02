@@ -1,0 +1,5 @@
+Footer.js
+Header.js
+lista_archivos.txt
+MetaData.js
+Search.js
