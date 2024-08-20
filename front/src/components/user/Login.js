@@ -18,8 +18,7 @@ export const Login = () => {
             navigate("/")
         }
         if (error) {
-            window.alert("Error en la autenticación")
-            dispatch(clearErrors)
+           dispatch(clearErrors)
         }
     }, [dispatch, isAuthenticated, error, alert, navigate])
 
