@@ -80,7 +80,7 @@ export const UpdateProduct = () => {
         }
         if (isUpdated) {
             alert.success("Producto actualizado correctamente");
-            navigate("/productListioo")
+            navigate("/productList")
             dispatch({ type: UPDATE_PRODUCT_RESET })
         }
 
