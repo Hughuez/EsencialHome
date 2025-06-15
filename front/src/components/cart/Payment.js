@@ -17,6 +17,7 @@ export const Payment = () => {
     const [paymentMethod, setPaymentMethod] = useState("Tarjeta");
     const [cardType, setCardType] = useState("");
     const [cardNumber, setCardNumber] = useState("");
+    const [cardDate, setCardDate] = useState("");
     const [cardCVC, setCardCVC] = useState("");
     
     useEffect(() => {
@@ -107,7 +108,7 @@ export const Payment = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="card_num">Número de tarjeta</label>
+                                    <label htmlFor="card_num_field">Número de tarjeta</label>
                                     <input 
                                         type="number" 
                                         id="card_num" 
@@ -118,7 +119,18 @@ export const Payment = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="card_cvc">CVC</label>
+                                    <label htmlFor="card_num_field">Fecha vencimiento mmaa</label>
+                                    <input 
+                                        type="number" 
+                                        id="card_num" 
+                                        className="form-control" 
+                                        value={cardDate} 
+                                        onChange={(e) => setCardDate(e.target.value)} 
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="">CVC</label>
                                     <input 
                                         type="number" 
                                         id="card_cvc" 
