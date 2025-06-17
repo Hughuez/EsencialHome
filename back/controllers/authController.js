@@ -76,10 +76,13 @@ exports.forgotPassword = catchAsyncErrors ( async( req, res, next) =>{
     }
     const resetToken= user.genResetPasswordToken();
 
-    await user.save({validateBeforeSave: false})
+    await User.findByIdAndUpdate(user._id, {
+    resetPasswordToken: user.resetPasswordToken,
+    resetPasswordExpire: user.resetPasswordExpire
+}, { new: true, validateBeforeSave: false });
 
     //Crear una url para hacer el reset de la contraseña
-    `${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`;
+    const resetUrl = `${req.protocol}://localhost:3000/resetPassword/${resetToken}`;
 
     const mensaje=`¡Hola ${user.nombre}!\n\nTu link para establecer una nueva contraseña es el siguiente: 
     \n\n${resetUrl}\n\n Si no solicitaste este link, por favor comunicate con soporte.\n\n Att:\nEsencial Home Store`
