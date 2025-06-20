@@ -206,29 +206,28 @@ export const getProductReviews = (id) => async (dispatch) => {
     }
 }
 
-// Delete product review
-export const deleteReview = (id, productId) => async (dispatch) => {
+// Acción para eliminar una opinión de un producto
+export const deleteReview = (idProducto, idReview) => async (dispatch) => {
     try {
+        dispatch({ type: DELETE_REVIEW_REQUEST });
 
-        dispatch({ type: DELETE_REVIEW_REQUEST })
-
-        const { data } = await axios.delete(`/api/reviews?idProducto=${productId}&idReview=${id}`)
+        // Coincide con el controlador: consulta por idProducto e idReview
+        const { data } = await axios.delete(`/api/review?idProducto=${idProducto}&idReview=${idReview}`);
 
         dispatch({
             type: DELETE_REVIEW_SUCCESS,
             payload: data.success
-        })
+        });
 
     } catch (error) {
-
-        console.log(error.response);
+        console.error('Error al eliminar review:', error.response?.data || error.message);
 
         dispatch({
             type: DELETE_REVIEW_FAIL,
-            payload: error.response.data.message
-        })
+            payload: error.response?.data?.message || 'Error inesperado al eliminar la opinión'
+        });
     }
-}
+};
 
 //clear error
 export const clearErrors = () => async (dispatch) => {

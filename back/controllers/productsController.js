@@ -189,33 +189,45 @@ exports.getProductReviews = catchAsyncErrors(async (req, res, next) => {
     })
 })
 
-//Eliminar review
+// Eliminar review
 exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
-    const product = await producto.findById(req.query.idProducto);
+    const { idProducto, idReview } = req.query;
 
-    const opi = product.opiniones.filter(opinion =>
-        opinion._id.toString() !== req.query.idReview.toString());
+    const productoDoc = await producto.findById(idProducto);
 
-    const numCalificaciones = opi.length;
+    if (!productoDoc) {
+        return next(new ErrorHandler('Producto no encontrado', 404));
+    }
 
-    const calificacion = opi.reduce((acc, Opinion) =>
-        Opinion.rating + acc, 0) / opi.length;
 
-    await producto.findByIdAndUpdate(req.query.idProducto, {
-        opi,
-        calificacion,
-        numCalificaciones
+    // Filtrar las opiniones para excluir la que se desea eliminar
+    const opinionesActualizadas = productoDoc.opiniones.filter(opinion =>
+        opinion._id.toString() !== idReview.toString()
+    );
+
+    // Recalcular calificación promedio
+    const totalRatings = opinionesActualizadas.reduce((acc, opinion) => acc + opinion.rating, 0);
+    const nuevaCalificacion = opinionesActualizadas.length === 0
+        ? 0
+        : totalRatings / opinionesActualizadas.length;
+
+    // Actualizar los campos del producto
+    const productoActualizado = await producto.findByIdAndUpdate(idProducto, {
+        opiniones: opinionesActualizadas,
+        calificacion: nuevaCalificacion,
+        numCalificaciones: opinionesActualizadas.length
     }, {
         new: true,
         runValidators: true,
         useFindAndModify: false
-    })
+    });
+
+
     res.status(200).json({
         success: true,
-        message: "review eliminada correctamente"
-    })
-
-})
+        message: 'Opinión eliminada correctamente'
+    });
+});
 
 //Ver la lista de productos (Admin)
 exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {

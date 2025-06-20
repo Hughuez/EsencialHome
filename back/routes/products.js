@@ -23,8 +23,8 @@ router.route('/producto/:id').get(getProductById); // consulta por id
 
 //rutas reviews
 router.route("/review").put(isAuthenticatedUser, createProductReview) //crear una review
-router.route("/reviews").get(getProductReviews)
-router.route("/review").delete(isAuthenticatedUser, deleteReview)
+router.route("/reviews").get(getProductReviews) //ver review
+router.route("/review").delete(isAuthenticatedUser, deleteReview) //eliminar review
 
 //rutas admin
 router.route('/producto/nuevo').post(isAuthenticatedUser, authorizeRoles("admin"), newProduct); // Establecemos ruta para crear producto nuevo

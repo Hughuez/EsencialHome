@@ -63,7 +63,7 @@ const ProductsList = () => {
                 },
             ],
             rows: []
-        }
+        }   
 
         products.forEach(product => {
             data.rows.push({
